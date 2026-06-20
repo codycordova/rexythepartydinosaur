@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rexy the Dinosaur 🦖</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dino-teal: #3ECFB2;
+    --dino-green: #7ED957;
+    --party-pink: #FF3DA6;
+    --party-yellow: #FFE135;
+    --party-orange: #FF6B35;
+    --dark: #0D0D0D;
+    --off-white: #F5F0E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--off-white);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(62,207,178,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 30%, rgba(255,61,166,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(255,107,53,0.12) 0%, transparent 50%);
+    z-index: 0;
+  }
+
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .eyebrow {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--dino-teal);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .eyebrow::before, .eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--dino-teal);
+    opacity: 0.6;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 18vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, var(--dino-teal) 0%, var(--dino-green) 40%, var(--party-yellow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    color: var(--off-white);
+    opacity: 0.9;
+    letter-spacing: 0.05em;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-sub span {
+    color: var(--party-pink);
+  }
+
+  .dino-emoji-big {
+    font-size: clamp(4rem, 10vw, 7rem);
+    display: block;
+    margin-bottom: 1rem;
+    animation: bounce 2.2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-18px) rotate(3deg); }
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .tag {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--off-white);
+    opacity: 0.85;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dino-teal);
+    opacity: 0.6;
+    animation: fade-pulse 2s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes fade-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    background: var(--party-pink);
+    padding: 0.75rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 18s linear infinite;
+  }
+
+  .marquee-inner span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.12em;
+    color: var(--dark);
+    margin: 0 2rem;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--party-yellow);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    color: var(--off-white);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title .accent { color: var(--dino-teal); }
+
+  /* ── BIO ── */
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .bio-text p {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: rgba(245,240,232,0.75);
+    margin-bottom: 1.2rem;
+  }
+
+  .bio-text p strong {
+    color: var(--off-white);
+    font-weight: 700;
+  }
+
+  .bio-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .stat {
+    border-left: 3px solid var(--dino-teal);
+    padding-left: 1rem;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--party-pink);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-top: 0.2rem;
+  }
+
+  .bio-img-wrap {
+    position: relative;
+  }
+
+  .bio-img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    background: linear-gradient(135deg, var(--party-pink), var(--dino-teal));
+    border-radius: 18px;
+    z-index: 0;
+  }
+
+  .bio-img-wrap img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── GALLERY ── */
+  .gallery-section {
+    max-width: 1200px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+
+  .gallery-item.wide {
+    grid-column: span 2;
+    aspect-ratio: 16/9;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.06);
+  }
+
+  .gallery-item .caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-transform: uppercase;
+  }
+
+  .gallery-item:hover .caption {
+    opacity: 1;
+  }
+
+  /* ── SUMMER PLANS ── */
+  .plans-section {
+    background: rgba(62,207,178,0.06);
+    border: 1px solid rgba(62,207,178,0.15);
+    border-radius: 24px;
+    padding: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .plan-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .plan-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--dino-teal);
+  }
+
+  .plan-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .plan-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--off-white);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .plan-desc {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(245,240,232,0.6);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-dino {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    background: linear-gradient(90deg, var(--dino-teal), var(--party-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: rgba(245,240,232,0.35);
+    letter-spacing: 0.1em;
+  }
+
+  .social-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .social-link {
+    color: rgba(245,240,232,0.5);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .social-link:hover {
+    color: var(--dino-teal);
+    border-color: var(--dino-teal);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .bio-grid { grid-template-columns: 1fr; }
+    .bio-img-wrap { order: -1; max-width: 360px; margin: 0 auto; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-item.wide { grid-column: span 2; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .plans-section { padding: 2.5rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+
+  /* ── GLOW PULSE on dino img ── */
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 30px rgba(62,207,178,0.3); }
+    50% { box-shadow: 0 0 60px rgba(255,61,166,0.4); }
+  }
+
+  .bio-img-wrap img {
+    animation: glow 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" style="padding:0; max-width:none;">
+  <div class="hero-bg"></div>
+  <div class="scanlines"></div>
+  <div class="hero-content">
+    <span class="dino-emoji-big">🦖</span>
+    <div class="eyebrow">Est. Pre-Historic · Los Angeles · Summer 2026</div>
+    <h1>REXY</h1>
+    <div class="hero-sub">The <span>Ultimate Party</span> Dinosaur</div>
+    <div class="tag-row">
+      <span class="tag">🎧 DJ</span>
+      <span class="tag">🎵 Music Producer</span>
+      <span class="tag">🏖️ Beach Gang</span>
+      <span class="tag">🥩 Steak Enthusiast</span>
+      <span class="tag">👟 Sneakerhead</span>
+      <span class="tag">✨ Public Figure</span>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ scroll ↓</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span>REXY THE DINOSAUR</span>
+    <span>🦖</span>
+    <span>DJ · PARTY DINOSAUR · MUSIC PRODUCER</span>
+    <span>🎧</span>
+    <span>SUMMER 2026 IS HIS SEASON</span>
+    <span>🏖️</span>
+    <span>REXY THE DINOSAUR</span>
+    <span>🦖</span>
+    <span>DJ · PARTY DINOSAUR · MUSIC PRODUCER</span>
+    <span>🎧</span>
+    <span>SUMMER 2026 IS HIS SEASON</span>
+    <span>🏖️</span>
+    <span>REXY THE DINOSAUR</span>
+    <span>🦖</span>
+    <span>DJ · PARTY DINOSAUR · MUSIC PRODUCER</span>
+    <span>🎧</span>
+    <span>SUMMER 2026 IS HIS SEASON</span>
+    <span>🏖️</span>
+  </div>
+</div>
+
+<!-- BIO -->
+<section>
+  <div class="bio-grid">
+    <div class="bio-text">
+      <div class="section-label">Who is Rexy?</div>
+      <h2 class="section-title">A <span class="accent">Legend</span> Among Legends</h2>
+      <p>Rexy is a vintage classic dinosaur toy who somehow became <strong>the most connected dinosaur in Los Angeles</strong>. He DJs, he produces music, he cooks steak, he goes on boats, and yes — he attends the Grammys.</p>
+      <p>His energy? <strong>Pure chaos, maximum vibes.</strong> He's been spotted at dubstep shows, poolside photoshoots, costume parties, and hanging with the homies since before you were cool.</p>
+      <p>Now it's <strong>Summer 2026</strong> — and Rexy is going outside.</p>
+      <div class="bio-stats">
+        <div class="stat">
+          <div class="stat-num">65M</div>
+          <div class="stat-label">Years of Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Parties Attended</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Chain (gold, iced out)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">🔥</div>
+          <div class="stat-label">Steak: always medium-rare</div>
+        </div>
+      </div>
+    </div>
+    <div class="bio-img-wrap">
+      <img src="rexy4.jpg" alt="Rexy DJing" onerror="this.style.background='linear-gradient(135deg,#3ECFB2,#FF3DA6)';this.style.minHeight='400px';">
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" style="max-width:1200px;">
+  <div class="section-label" style="padding:0 0 0 0.5rem;">The Archives</div>
+  <h2 class="section-title" style="padding:0 0 0 0.5rem;">Rexy's <span class="accent">Greatest Hits</span></h2>
+  <div class="gallery-grid">
+    <div class="gallery-item wide">
+      <img src="rexy_onaboat_withfriends.jpg" alt="Rexy on a boat with friends" onerror="this.style.background='#1a2a2a';">
+      <div class="caption">Boat Gang 🛥️</div>
+    </div>
+    <div class="gallery-item">
+      <img src="rexy_at_dubstep_show.jpg" alt="Rexy at dubstep show" onerror="this.style.background='#1a1a2a';">
+      <div class="caption">Dubstep Mode 🎵</div>
+    </div>
+    <div class="gallery-item">
+      <img src="rexi_cookingsteak.jpg" alt="Rexy cooking steak" onerror="this.style.background='#2a1a0a';">
+      <div class="caption">Chef Rexy 🥩</div>
+    </div>
+    <div class="gallery-item">
+      <img src="rexy_dripped_out_withsneakers.jpg" alt="Rexy dripped out with sneakers" onerror="this.style.background='#1a0a2a';">
+      <div class="caption">Fresh Drip 👟</div>
+    </div>
+    <div class="gallery-item wide">
+      <img src="rexy_with_jordanward_codycordova_alexya_stavoranger.jpg" alt="Rexy with the crew" onerror="this.style.background='#0a1a2a';">
+      <div class="caption">The Crew 🤙</div>
+    </div>
+    <div class="gallery-item">
+      <img src="rexy_withparents.jpg" alt="Rexy with parents" onerror="this.style.background='#0a2a1a';">
+      <div class="caption">Family First 🦕</div>
+    </div>
+    <div class="gallery-item">
+      <img src="rexi_with_xxaniii.jpg" alt="Rexy with friends" onerror="this.style.background='#2a0a1a';">
+      <div class="caption">VIP Access ✨</div>
+    </div>
+    <div class="gallery-item">
+      <img src="rexi_with_codycordova.jpg" alt="Rexy with Cody Cordova" onerror="this.style.background='#1a1a0a';">
+      <div class="caption">The Link Up 🤝</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMER PLANS -->
+<div style="padding: 2rem;">
+  <div class="plans-section">
+    <div class="section-label">Summer 2026</div>
+    <h2 class="section-title">What <span class="accent">Rexy</span> Is Doing This Summer</h2>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <span class="plan-icon">🏖️</span>
+        <div class="plan-title">Beach Days</div>
+        <p class="plan-desc">Rexy is trading the DJ booth for the shoreline. Sun, sand, and a gold chain. The ocean has never seen anything this legendary.</p>
+      </div>
+      <div class="plan-card">
+        <span class="plan-icon">🎧</span>
+        <div class="plan-title">Pop-Up Sets</div>
+        <p class="plan-desc">Unannounced DJ sets, outdoor raves, rooftop parties. Wherever the vibe calls, Rexy answers. Follow the chain — it leads to the drop.</p>
+      </div>
+      <div class="plan-card">
+        <span class="plan-icon">🥩</span>
+        <div class="plan-title">BBQ Circuit</div>
+        <p class="plan-desc">Backyard grills, poolside cookouts, sunset dinners. Rexy is firing up every steak in a 50-mile radius and he is not sorry.</p>
+      </div>
+      <div class="plan-card">
+        <span class="plan-icon">🚤</span>
+        <div class="plan-title">Boat Life</div>
+        <p class="plan-desc">The boat gang is back. Open water, good people, and a dinosaur who absolutely cannot legally operate a vessel but will try anyway.</p>
+      </div>
+      <div class="plan-card">
+        <span class="plan-icon">👟</span>
+        <div class="plan-title">New Kicks</div>
+        <p class="plan-desc">Summer 2026 sneaker drops are calling Rexy's name. The fits will be immaculate. The heat will be real. The drip, unstoppable.</p>
+      </div>
+      <div class="plan-card">
+        <span class="plan-icon">🌴</span>
+        <div class="plan-title">Just Vibing</div>
+        <p class="plan-desc">Sometimes Rexy just exists — and that's enough. Windows down, music up, arms (short as they are) out the window.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-dino">REXY THE DINOSAUR</span>
+  <div class="social-row">
+    <a class="social-link" href="https://facebook.com/realrexydinosaur" target="_blank">Facebook</a>
+    <a class="social-link" href="#" target="_blank">Instagram</a>
+    <a class="social-link" href="#" target="_blank">SoundCloud</a>
+  </div>
+  <p>🦖 The Ultimate Party Dinosaur · DJ · Music Producer · Public Figure · Summer 2026</p>
+</footer>
+
+</body>
+</html>
